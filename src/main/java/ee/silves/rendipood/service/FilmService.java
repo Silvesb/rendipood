@@ -14,11 +14,7 @@ public class FilmService {
     private FilmRepository filmRepository;
 
     public List<Film> getAllFilms() {
-        return filmRepository.findAllByOrderByIdAsc();
-    }
-
-    public List<Film> getAvailableFilms() {
-        return filmRepository.findByRentedFalseOrderByIdAsc();
+        return filmRepository.findAll();
     }
 
     public Film getFilmById(Long id) {
@@ -26,21 +22,21 @@ public class FilmService {
                 .orElseThrow(() -> new RuntimeException("Film not found with id: " + id));
     }
 
-    public Film addFilm(Film film) {
+    public void addFilm(Film film) {
         if (film.getId() != null) {
             throw new RuntimeException("Cannot add film with an existing ID");
         }
-        return filmRepository.save(film);
+        filmRepository.save(film);
     }
 
-    public Film updateFilm(Film film) {
+    public void updateFilm(Film film) {
         if (film.getId() == null) {
             throw new RuntimeException("Film ID is required for update");
         }
         if (!filmRepository.existsById(film.getId())) {
             throw new RuntimeException("Film not found with id: " + film.getId());
         }
-        return filmRepository.save(film);
+        filmRepository.save(film);
     }
 
     public void deleteFilm(Long id) {
@@ -49,28 +45,18 @@ public class FilmService {
         }
         filmRepository.deleteById(id);
     }
-
-    public Film rentFilm(Long id) {
-        Film film = filmRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Film not found with id: " + id));
-        if (film.isRented()) {
-            throw new RuntimeException("Film is already rented");
-        }
-        film.setRented(true);
-        return filmRepository.save(film);
-    }
-
-    public List<Film> getRentedFilms() {
-        return filmRepository.findByRentedTrueOrderByIdAsc();
-    }
+//
+//    public List<Film> getRentedFilms() {
+//        return filmRepository.findByRentedTrueOrderByIdAsc();
+//    }
 
     public Film unrentFilm(Long id) {
         Film film = filmRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Film not found with id: " + id));
-        if (!film.isRented()) {
-            throw new RuntimeException("Film is not currently rented");
-        }
-        film.setRented(false);
+//        if (!film.isRented()) {
+//            throw new RuntimeException("Film is not currently rented");
+//        }
+//        film.setRented(false);
         return filmRepository.save(film);
     }
 }

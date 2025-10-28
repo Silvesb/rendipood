@@ -7,6 +7,6 @@ import java.util.List;
 
 public interface FilmRepository extends JpaRepository<Film, Long> {
     List<Film> findAllByOrderByIdAsc();
-    List<Film> findByRentedFalseOrderByIdAsc();
-    List<Film> findByRentedTrueOrderByIdAsc();
+    // List<Film> findByRentedFalseOrderByIdAsc();
+    // List<Film> findByRentedTrueOrderByIdAsc();
 }

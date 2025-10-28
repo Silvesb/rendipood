@@ -8,20 +8,23 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.Date;
+import java.util.List;
+
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-public class Film {
+public class Rental {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private String title;
-    private FilmType type;
-    private int days;
+    private double initialFee;
+    private double lateFee;
+    private Date created;
 
-    @ManyToOne
-    @JsonBackReference
-    private Rental rental;
+    @OneToMany(mappedBy="rental", cascade = CascadeType.ALL)
+    @JsonManagedReference
+    private List<Film> films;
 }

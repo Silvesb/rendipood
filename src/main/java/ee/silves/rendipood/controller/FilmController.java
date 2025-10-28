@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@CrossOrigin(origins = "*")
+@CrossOrigin(origins = "http://localhost:5173")
 public class FilmController {
 
     /* Dependency injection */
@@ -24,8 +24,8 @@ public class FilmController {
 
     // http://localhost:8080/available-films
     @GetMapping("available-films")
-    public ResponseEntity<List<Film>> getAvailableFilms() {
-        return ResponseEntity.ok().body(filmService.getAvailableFilms());
+    public List<Film> getAvailableFilms() {
+        return filmService.getAllFilms();
     }
 
     // http://localhost:8080/films/1
@@ -40,6 +40,8 @@ public class FilmController {
         if (film.getId() != null) {
             throw new RuntimeException("Cannot add with ID");
         }
+        film.setDays(0);
+        film.setRental(null);
         filmService.addFilm(film);
         return ResponseEntity.status(201).body(filmService.getAllFilms());
     }
@@ -59,15 +61,15 @@ public class FilmController {
     }
 
     // http://localhost:8080/films/1/rent
-    @PatchMapping("films/{id}/rent")
-    public ResponseEntity<Film> rentFilm(@PathVariable Long id) {
-        return ResponseEntity.ok().body(filmService.rentFilm(id));
-    }
+//    @PatchMapping("films/{id}/rent")
+//    public ResponseEntity<Film> rentFilm(@PathVariable Long id) {
+//        return ResponseEntity.ok().body(filmService.rentFilm(id));
+//    }
 
     // http://localhost:8080/rented-films
     @GetMapping("rented-films")
     public ResponseEntity<List<Film>> getRentedFilms() {
-        return ResponseEntity.ok().body(filmService.getRentedFilms());
+        return ResponseEntity.ok().body(filmService.getAllFilms());
     }
 
     // http://localhost:8080/films/1/unrent
